@@ -12,3 +12,6 @@ This version is a spin-off from a previous mobile app incarnation which can be f
     * `> python app.py`
 1. Sell chems to kids (feature not yet supported)
     * Navigate to `127.0.0.1:5000` in browser
+
+
+Check this out for [inspiration](http://fallout.wikia.com/wiki/Happy_Trails_Caravan_Company)
