@@ -8,6 +8,8 @@ This version is a spin-off from a previous mobile app incarnation which can be f
     * [Download Python 3](https://www.python.org/downloads/)
 1. Get flask
     * `> pip install flask`
+1. Get NodeJS
+    * [Download Node](https://nodejs.org/en/)
 1. Start the local server
     * `> python app.py`
 1. Sell chems to kids (feature not yet supported)
