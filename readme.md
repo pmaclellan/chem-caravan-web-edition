@@ -20,8 +20,8 @@ This version is a spin-off from a previous mobile app incarnation which can be f
 The Flask server serves a compiled version of the Angular app.
 1. Build the Angular app
     * `cd frontend`
-    * `ng build --base-href /static/`
-    * Copy the contents of `frontend/dist` into the backend. This is what will be served by the flask server. Put `index.html` into `backend/templates` and then all of the other files into `backend/static`.
+    * `./build.sh`
+        * This is a custom build script which will compile the project and then move all of the generated files over to the backend to be served.
     * `cd backend`
     * Launch the dev server with `python3 app.py` and then check it out in your browser at `127.0.0.1:5000`
 
