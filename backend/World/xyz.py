@@ -1,5 +1,8 @@
 from collections import defaultdict, namedtuple
 
+###################################
+#Data definitions
+###################################
 Settlement = namedtuple('Settlement', [
     'name',
     'neighbors',
@@ -13,12 +16,16 @@ CommerceItem = namedtuple('CommerceItem', [
 
 Edge = namedtuple('Edge', ['dest', 'cost'])
 
+###################################
+# Instances
+###################################
+
 # Create some blank settlements to be filled in during world creation.
 settlements = {
-    'Jamaica Plain': Settlement('Jamaica Plain', [], None),
-    'Park Street': Settlement('Park Street', [], None),
-    'Goodneighbor': Settlement('Goodneighbor', [], None),
-    'Diamond City': Settlement('Diamond City', [], None),
+    'Jamaica Plain': Settlement('Jamaica Plain', [], {}),
+    'Park Street': Settlement('Park Street', [], {}),
+    'Goodneighbor': Settlement('Goodneighbor', [], {}),
+    'Diamond City': Settlement('Diamond City', [], {}),
 }
 
 edges = [
@@ -27,6 +34,10 @@ edges = [
     ('Goodneighbor', 'Diamond City', 1)
 ]
 
+###################################
+#Functions
+###################################
+
 def connect_the_dots(settlements, edges):
     for origin, dest, cost in edges:
         # Create a doubly-linked path from Settlement A to B
@@ -34,18 +45,26 @@ def connect_the_dots(settlements, edges):
         settlements[dest].neighbors.append(Edge(origin, cost))
     return settlements
 
-def make_world(edges):
-    world = defaultdict(set)
-    for origin, destination, cost in edges:
-        world[origin].add(Edge(destination, cost))
-        world[destination].add(Edge(origin, cost))
-    return world
+def init_commerce_items(settlements):
+    for name in settlements:
+        settlements[name].stock['Jet'] = CommerceItem('Jet', 300)
+        settlements[name].stock['Psycho'] = CommerceItem('Psycho', 1200)
+    return settlements
 
 def pprint(settlements):
     for name, settlement in settlements.items():
         print(name)
+
         for edge in settlement.neighbors:
             print(f'\t-> {edge.dest} ({edge.cost})')
 
-pprint(connect_the_dots(settlements, edges))
-#pprint(make_world(edges))
+        for key, chem in settlement.stock.items():
+            print(f'\t\t {chem.name} @ {chem.price} caps')
+
+
+###################################
+# Do it!
+###################################
+pprint(init_commerce_items(
+    connect_the_dots(
+        settlements, edges)))
