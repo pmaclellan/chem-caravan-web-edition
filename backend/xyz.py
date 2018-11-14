@@ -39,14 +39,15 @@ def init_commerce_items(settlements):
     return settlements
 
 def pprint(settlements):
-    for settlementId, settlement in settlements.items():
+    for _, settlement in settlements.items():
         print(settlement.name)
+        print('-----------------------------------------')
 
-        for key, chem in settlement.stock.items():
+        for _, chem in settlement.stock.items():
             print(f'  {chem.name} @ {chem.price} caps')
 
         for roadId in settlement.outboundRoads:
-            print(f'\t-> {roads[roadId].dest} ({roads[roadId].cost})')
+            print(f'   -> {roads[roadId].dest} ({roads[roadId].cost})')
 
         print('\n')
 
