@@ -1,3 +1,5 @@
+from counter import incrementingCounter
+
 class Inventory:
    '''
    An Inventory is a thin wrapper around a collection of items. Each item has a
@@ -8,7 +10,7 @@ class Inventory:
       self.capacity = capacity
       self.currentWeight = 0
       self.items = {}
-      self.idGenerator = count()
+      self.idGenerator = incrementingCounter()
 
    def Add(self, item):
       # Only add if we have space available
@@ -29,7 +31,10 @@ class Inventory:
       
       return removedItem
 
-def count(start=0):
-      while True:
-         yield start
-         start += 1
+class InventoryItem:
+   def __init__(self, name, weight):
+      self.name = name
+      self.weight = weight
+
+   def __repr__(self):
+      return f'{self.name}: weight {self.weight}'
