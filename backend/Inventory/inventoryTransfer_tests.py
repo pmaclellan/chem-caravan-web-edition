@@ -1,6 +1,6 @@
 import unittest
 from inventory import Inventory, InventoryItem
-from inventoryTransfer import InventoryTransfer
+from inventoryTransfer import InventoryTransfer, InvalidTransactionWarning
 
 # Define global test objects
 jet1 = InventoryItem('Jet', 1)
@@ -39,12 +39,23 @@ class InventoryTransferTests(unittest.TestCase):
       transfer.StageMove(jet1Id, 0, 1) # 0 is inventory1, 1 is inventory2
       # Commit the transaction and check that the item was moved
       inv1, inv2 = transfer.Commit()
-      print(inv1.items)
-      print(inv2.items)
       self.assertIn(jet1, inv2.items.values(),
          'Item was not added to inventory')
       self.assertNotIn(jet1, inv1.items.values(),
          'Item was not removed from inventory')
+
+   def test_move_then_move_back(self):
+      pass
+
+   def test_cannot_exceeed_capacity(self):
+      transfer = InventoryTransfer([inventory1, inventory2])
+      transfer.StageMove(mirelurk2Id, 1, 0) # 0 is inventory1, 1 is inventory2
+      with self.assertRaises(InvalidTransactionWarning):
+         transfer.Commit()
+      
+      # Check that we rolled back the inventories after a bad commit
+      self.assertEqual(inventory1, transfer.inventories[0])
+      self.assertEqual(inventory2, transfer.inventories[1])
 
 if __name__ == '__main__':
     unittest.main()

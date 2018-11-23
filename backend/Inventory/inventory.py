@@ -14,14 +14,14 @@ class Inventory:
 
    def Add(self, item):
       # Only add if we have space available
-      if self.currentWeight + item.weight <= self.capacity:
-         self.currentWeight += item.weight
-         # Generate a new ID
-         itemId = self.idGenerator.__next__()
-         self.items[itemId] = item
-         return itemId
-      
-      return None
+      if self.currentWeight + item.weight > self.capacity:
+         raise ValueError('Not enough space to add item')
+         
+      self.currentWeight += item.weight
+      # Generate a new ID
+      itemId = self.idGenerator.__next__()
+      self.items[itemId] = item
+      return itemId
 
    def Remove(self, itemId):
       # Pull out the item if it exists

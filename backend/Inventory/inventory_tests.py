@@ -12,7 +12,8 @@ class InventoryTests(unittest.TestCase):
 
    def test_cannot_add_over_capacity(self):
       inv = Inventory(1)
-      self.assertFalse(inv.Add(InventoryItem('Two Heavy', 2)))
+      with self.assertRaises(ValueError):
+         inv.Add(InventoryItem('Two Heavy', 2))
 
    def test_current_weight_updated_after_add(self):
       inv = Inventory(10)
@@ -45,7 +46,8 @@ class InventoryTests(unittest.TestCase):
       item2 = InventoryItem('Little guy', 2)
       itemId1 = inv.Add(item1)
       # Check that we can't add item2 becuase there is not enough space
-      self.assertEqual(None, inv.Add(item2))
+      with self.assertRaises(ValueError):
+         inv.Add(item2)
       # Now remove item1 and check that we can add item2
       inv.Remove(itemId1)
       self.assertNotEqual(None, inv.Add(item2))

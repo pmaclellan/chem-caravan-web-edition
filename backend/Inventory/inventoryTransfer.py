@@ -5,6 +5,9 @@ from collections import namedtuple
 Removal = namedtuple('Removal', ['ItemId', 'InventoryId'])
 Addition =  namedtuple('Addition', ['Item', 'InventoryId'])
 
+class InvalidTransactionWarning(UserWarning):
+   pass
+
 class InventoryTransfer:
    def __init__(self, inventories):
       self.idGenerator = incrementingCounter()
@@ -29,11 +32,17 @@ class InventoryTransfer:
       self.pendingRemovals.append(Removal(itemId, fromInventory))
 
    def Commit(self):
+      rollbackInventories = self.inventories.copy()
       # Perform the removals first to clear up space
       for removal in self.pendingRemovals:
          self.inventories[removal.InventoryId].Remove(removal.ItemId)
       
       for addition in self.pendingAdditions:
-         self.inventories[addition.InventoryId].Add(addition.Item)
+         try:
+            self.inventories[addition.InventoryId].Add(addition.Item)
+         except ValueError:
+            self.inventories = rollbackInventories
+            raise InvalidTransactionWarning(f'Unable to perform transaction, \
+               not enough space in inventory {addition.InventoryId}')
 
       return tuple(self.inventories.values())
