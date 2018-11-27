@@ -42,19 +42,40 @@ class InventoryTransferTests(unittest.TestCase):
             transfer.StageMove(jet1Id, 0, 2)
 
     def test_move_one_item_and_commit(self):
+        '''
+        Item staged for move should be removed from one Inventory and
+        added to the other on Commit.
+        '''
         transfer = InventoryTransfer([inventory1, inventory2])
         transfer.StageMove(jet1Id, 0, 1) # 0 is inventory1, 1 is inventory2
         # Commit the transaction and check that the item was moved
         inv1, inv2 = transfer.Commit()
         self.assertIn(jet1, inv2.items.values(),
-            'Item was not added to inventory')
+            'Item should have been added to inventory')
         self.assertNotIn(jet1, inv1.items.values(),
-            'Item was not removed from inventory')
+            'Item should have been removed from inventory')
 
     def test_move_then_move_back(self):
+        '''
+        Moving an Item, commiting, moving back, and commiting should result
+        in unchanged Inventory's
+        '''
         pass
+        # transfer = InventoryTransfer([inventory1, inventory2])
+        # # Move the Item over
+        # transfer.StageMove(jet2Id, 0, 1)
+        # transfer.Commit()
+
+        # # And then move it back
+        # # CRUFT ALERT: Find the new ID of Jet in inventory2
+        # _, newJetId = filter(lambda name, _ : name == 'Jet', 
+        #     transfer.inventories[1].items.items())[0]
+        # transfer.StageMove(newJetId)
 
     def test_cannot_exceeed_capacity(self):
+        '''
+        Reject transfer Commit that would result in an over-capacity Inventory.
+        '''
         transfer = InventoryTransfer([inventory1, inventory2])
         transfer.StageMove(mirelurk2Id, 1, 0) # 0 is inventory1, 1 is inventory2
         with self.assertRaises(InvalidTransactionWarning):

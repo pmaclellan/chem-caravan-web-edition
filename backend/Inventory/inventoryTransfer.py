@@ -45,7 +45,9 @@ class InventoryTransfer:
                 self.inventories[addition.InventoryId].Add(addition.Item)
             except ValueError:
                 self.inventories = rollbackInventories
-                raise InvalidTransactionWarning(f'Unable to perform transaction, \
-                not enough space in inventory {addition.InventoryId}')
+                raise InvalidTransactionWarning(f'\
+                    Unable to perform transaction,\
+                    not enough space in inventory \
+                    {addition.InventoryId}')
 
         return tuple(self.inventories.values())
