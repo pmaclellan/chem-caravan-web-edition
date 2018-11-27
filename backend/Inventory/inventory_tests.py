@@ -4,9 +4,7 @@ from inventory import Inventory, InventoryItem
 class InventoryTests(unittest.TestCase):
 
     def test_initial_capacity(self):
-        '''
-        We properly initialize the capacity of a new inventory.
-        '''
+        '''Properly initialize the capacity of a new inventory.'''
         inv = Inventory(10)
         self.assertEqual(inv.capacity, 10)
 
