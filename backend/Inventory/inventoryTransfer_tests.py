@@ -60,17 +60,23 @@ class InventoryTransferTests(unittest.TestCase):
         Moving an Item, commiting, moving back, and commiting should result
         in unchanged Inventory's
         '''
-        pass
-        # transfer = InventoryTransfer([inventory1, inventory2])
-        # # Move the Item over
-        # transfer.StageMove(jet2Id, 0, 1)
-        # transfer.Commit()
+        transfer = InventoryTransfer([inventory1, inventory2])
+        # Move the Item over
+        transfer.StageMove(jet2Id, 0, 1)
+        transfer.Commit()
 
-        # # And then move it back
-        # # CRUFT ALERT: Find the new ID of Jet in inventory2
-        # _, newJetId = filter(lambda name, _ : name == 'Jet', 
-        #     transfer.inventories[1].items.items())[0]
-        # transfer.StageMove(newJetId)
+        # And then move it back
+        # CRUFT ALERT: Find the new ID of Jet in inventory2
+        # I don't think this is a big issue. In a real client app, we would
+        # display the list of items on screen and the IDs would automatically
+        # be tied to them
+        newJetId = max(transfer.inventories[1].items)
+        transfer.StageMove(newJetId, 1, 0)
+        updatedInv1, updatedInv2 = transfer.Commit()
+
+        # Now check that the inventories are back the way they started.
+        self.assertEqual(inventory1, updatedInv1)
+        self.assertEqual(inventory2, updatedInv2)
 
     def test_cannot_exceeed_capacity(self):
         '''
