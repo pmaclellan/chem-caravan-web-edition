@@ -1,0 +1,15 @@
+@startuml
+
+participant Main as M
+participant CaravanLoader as CVL
+participant LocationManager as LM
+participant Database as DB
+
+loop
+    M -> LM : Fetch Location Info (UID)
+    LM -> DB : Location UID
+    LM <- DB : Location JSON
+    M <- LM : Location Object
+    
+end
+@enduml
